@@ -2,12 +2,13 @@
 #include "serial.h"
 #include <stdio.h>
 #include <windows.h>
+#include "mavlink_types.h"
 
 static SerialCallback onSerialData = NULL;
 static HANDLE hSerial = NULL;
 
 DWORD WINAPI serialThreadProc(LPVOID param) {
-    uint8_t buf[256];
+    uint8_t buf[MAVLINK_MAX_PACKET_LEN];
     DWORD bytesRead;
 
     while (1) {

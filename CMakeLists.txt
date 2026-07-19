@@ -9,7 +9,10 @@ add_executable(com main.c
     serial.h
     serial.c
     serial_thread.h
-    serial_thread.c)
+    serial_thread.c
+    mavlink_handler.h
+    mavlink_handler.c
+)
 
 include(GNUInstallDirs)
 install(TARGETS com

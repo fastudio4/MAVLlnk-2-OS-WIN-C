@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <windows.h>
 
-
+static HANDLE localSerial = NULL;
 
 HANDLE serialInit(const char *portName) {
     char fullPortName[32];
@@ -54,28 +54,16 @@ HANDLE serialInit(const char *portName) {
         CloseHandle(hSerial);
         return NULL;
     }
+    localSerial = hSerial;
     return hSerial;
 }
 
-int serialWrite(HANDLE hSerial, const char *msg) {
+BOOL serialWrite(const uint8_t* buf, uint16_t len) {
     DWORD bytesWritten;
-    if (!WriteFile(hSerial, msg, strlen(msg), &bytesWritten, NULL)) {
-        printf("Recording error (code %lu)\n", GetLastError());
-        return 1;
+    if (WriteFile(localSerial, buf, len, &bytesWritten, NULL)) {
+        return (bytesWritten == len);
     }
-    printf("Sending %lu byte\n", bytesWritten);
-    return 0;
-}
-
-int serialRead(HANDLE hSerial, char *buffer, int bufSize) {
-    DWORD bytesRead;
-    if (!ReadFile(hSerial, buffer, bufSize, &bytesRead, NULL)) {
-        printf("Reading error (code %lu)\n", GetLastError());
-        return -1;
-    }
-    buffer[bytesRead] = '\0'; // додати термінатор для зручності
-    printf("Reading %lu byte: %s\n", bytesRead, buffer);
-    return bytesRead;
+    return FALSE;
 }
 
 void serialClose(HANDLE hSerial) {
