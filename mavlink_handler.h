@@ -1,4 +1,0 @@
-#ifndef MAVLINK_HANDLER_H
-#define MAVLINK_HANDLER_H
-
-#endif // MAVLINK_HANDLER_H
