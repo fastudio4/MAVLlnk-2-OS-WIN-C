@@ -6,10 +6,6 @@
 static SerialCallback onSerialData = NULL;
 static HANDLE hSerial = NULL;
 
-void registerSerialCallback(SerialCallback cb) {
-    onSerialData = cb;
-}
-
 DWORD WINAPI serialThreadProc(LPVOID param) {
     uint8_t buf[256];
     DWORD bytesRead;
@@ -25,13 +21,18 @@ DWORD WINAPI serialThreadProc(LPVOID param) {
     return 0;
 }
 
-void startSerialThread(const char *portName) {
+int startSerialThread(const char *portName, SerialCallback cb) {
+    onSerialData = cb;
     hSerial = serialInit(portName);
+    if(hSerial == NULL) {
+        return 0;
+    }
     HANDLE hThread = CreateThread(NULL, 0, serialThreadProc, NULL, 0, NULL);
     if (hThread == NULL) {
         printf("Failed to create thread (code %lu)\n", GetLastError());
+        return 0;
     } else {
-        serialClose(hSerial);
         CloseHandle(hThread);
     }
+    return 1;
 }
