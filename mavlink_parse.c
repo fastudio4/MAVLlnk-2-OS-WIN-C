@@ -1,4 +1,4 @@
-#include "mavlink_parce.h"
+#include "mavlink_parse.h"
 #include <stdio.h>
 // #include "common/mavlink_msg_command_long.h"
 #include "ardupilotmega/mavlink.h"

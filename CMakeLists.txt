@@ -10,8 +10,10 @@ add_executable(com main.c
     serial.c
     serial_thread.h
     serial_thread.c
-    mavlink_parce.h
-    mavlink_parce.c
+    mavlink_parse.h
+    mavlink_parse.c
+    mavlink_data.h
+    mavlink_data.c
 )
 
 include(GNUInstallDirs)
